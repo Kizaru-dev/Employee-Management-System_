@@ -5,6 +5,7 @@ import in.dto.DtoPractice.dto.EmployeeResponseDto;
 import in.dto.DtoPractice.dto.UpdateRequestDto;
 import in.dto.DtoPractice.dto.UpdateResponseDto;
 import in.dto.DtoPractice.entity.Employee;
+import in.dto.DtoPractice.exception.ResourceNotFoundException;
 import in.dto.DtoPractice.repository.EmployeeRepository;
 import org.springframework.stereotype.Service;
 
@@ -29,7 +30,8 @@ public class EmployeeServiceImpl implements EmployeeService{
 
     @Override
     public EmployeeResponseDto getEmployeeById(Long id) {
-        Employee employee = repository.findById(id).orElse(null);
+        Employee employee = repository.findById(id).orElseThrow(() ->
+                new ResourceNotFoundException("Invalid Employee Id " + id));
         return entityToResponse(employee);
     }
 
@@ -40,21 +42,24 @@ public class EmployeeServiceImpl implements EmployeeService{
 
     @Override
     public UpdateResponseDto updateEmployee(UpdateRequestDto updateRequestDto, Long id) {
-        Employee employee = repository.findById(id).orElse(null);
+        Employee employee = repository.findById(id).orElseThrow(() ->
+                new ResourceNotFoundException("Invalid id  id : " + id));
         updateEmployeeInternal(updateRequestDto,employee);
         return entityToUpdateResponse(employee);
     }
 
     @Override
     public String softDeleteEmployee(Long id) {
-        Employee employee = repository.findById(id).orElse(null);
+        Employee employee = repository.findById(id).orElseThrow(()->
+                new ResourceNotFoundException("Invalid id : " + id));
         employee.setDeleted(false);
         return "Employee has been deleted successfully";
     }
 
     @Override
     public void deleteEmployeeById(Long id) {
-        Employee employee = repository.findById(id).orElse(null);
+        Employee employee = repository.findById(id).orElseThrow(() ->
+                new ResourceNotFoundException("Invalid id of employee : " + id));
         repository.deleteById(employee.getId());
     }
 
