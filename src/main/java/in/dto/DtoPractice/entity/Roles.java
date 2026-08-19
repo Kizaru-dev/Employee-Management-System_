@@ -1,0 +1,12 @@
+package in.dto.DtoPractice.entity;
+
+public enum Roles {
+    MANAGER,
+    JUNIOR_DEVELOPER,
+    SENIOR_DEVELOPER,
+    JAVA_DEVELOPER,
+    PYTHON_DEVELOPER,
+    FULL_STACK_DEVELOPER,
+    JAVA_FULL_STACK_DEVELOPER;
+
+}
